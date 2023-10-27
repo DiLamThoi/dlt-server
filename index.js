@@ -4,8 +4,8 @@ const routes  = require('./routes');
 const port = 8080; // DefaultPort for HTTP
 
 // Connect Server: mongoDB - localhost
-const db = require('./src/config/db');
-db.connect();
+const DataBase = require('./src/config/db');
+DataBase.connect();
 
 // Init ServerApp
 const app = express();
@@ -18,6 +18,6 @@ app.use(express.json());
 routes(app);
 
 // Listen server
-app.listen('8080', () => {
+app.listen(port, () => {
     console.log(`Server is running on ${port}`);
 });

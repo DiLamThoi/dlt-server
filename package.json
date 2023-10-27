@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "introduce": "cd ./scripts && powershell.exe -File introduce.ps1",
     "start": "nodemon --inspect index.js"
   },
   "author": "",
