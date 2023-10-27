@@ -1,11 +1,11 @@
 
-const jobRoute = require('./src/modlules/dlt-db-job/JobRoute')
+const jobRoute = require('./src/modlules/dlt-db-job/JobRoutes');
 
 const routes = (app) => {
-    app.use('/jobs', jobRoute)
+    app.use('/jobs', jobRoute);
     app.use('/', (req, res) => {
-        res.send("home")
-    })
+        res.send('home');
+    });
 };
 
 module.exports = routes;

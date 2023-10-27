@@ -1,15 +1,21 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-async function connect() {
+const DATABASE_URI = 'mongodb://server.truongnbn.com:27017/dlt-server';
+
+async function connect(uri = DATABASE_URI) {
     try {
-        await mongoose.connect('mongodb://server.truongnbn.com:27017/dlt-server', {
+        await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true
-        })
-        console.log('connect successfully')
+        });
+        console.log('Connect database successfully!');
     } catch (error) {
-        console.log('connect failure', error)
+        console.log('Connect database failure!', error);
     }
 }
 
-module.exports = { connect }
+const DataBase = {
+    connect,
+};
+
+module.exports = DataBase;

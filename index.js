@@ -1,19 +1,23 @@
-const express = require("express")
-const morgan = require("morgan")
-const routes  = require('./routes')
+const express = require('express');
+const morgan = require('morgan');
+const routes  = require('./routes');
+const port = 8080; // DefaultPort for HTTP
 
-const db = require('./src/config/db')
-db.connect()
+// Connect Server: mongoDB - localhost
+const db = require('./src/config/db');
+db.connect();
 
-const app = express()
+// Init ServerApp
+const app = express();
 
 // MiddleWare
-app.use(morgan('combined'))
-app.use(express.json())
+app.use(morgan('combined'));
+app.use(express.json());
 
-// router
+// Routes Module
 routes(app);
 
-app.listen("8080", () => {
-    console.log('Server is running ...');
-})
+// Listen server
+app.listen('8080', () => {
+    console.log(`Server is running on ${port}`);
+});
