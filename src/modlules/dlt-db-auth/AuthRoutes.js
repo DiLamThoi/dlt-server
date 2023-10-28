@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const jobController = require('./JobController');
+const authController = require('./AuthController');
 
 // Routes
-router.get('/', jobController.get);
+router.post('/', authController.post);
 
 module.exports = router;

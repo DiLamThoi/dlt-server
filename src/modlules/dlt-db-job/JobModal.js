@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
-const JobModal = new Schema({
+const JobSchema = new Schema({
     title: String,
     description: String,
     educationLevel: Number,
@@ -17,4 +16,6 @@ const JobModal = new Schema({
     employerId: String,
 });
 
-module.exports = mongoose.model('jobs', JobModal);
+const JobModal = mongoose.model('jobs', JobSchema);
+
+module.exports = JobModal;
