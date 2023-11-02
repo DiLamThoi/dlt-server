@@ -1,4 +1,4 @@
-const JobModal = require('./JobModal');
+const JobModal = require('../models/JobModel');
 
 class JobController {
     get(req, res, next) {

@@ -1,7 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const jobController = require('../controllers/JobController');
 
-const jobController = require('./JobController');
+const router = express.Router();
 
 // Routes
 router.get('/', jobController.get);

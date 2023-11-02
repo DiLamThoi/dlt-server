@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
-const authModal = require('./AuthModal');
+const userModel = require('../models/UserModel');
 
-class AuthController {
+class LoginController {
     async post(req, res, next) {
-        const { userName, email, password } = req.body;
-        authModal.findOne({ $or: [{ userName }, { email }] })
+        const { data } = req.body;
+        const { userName, email, password } = data;
+        userModel.findOne({ $or: [{ userName }, { email }] })
             .then(
                 (user) => {
                     if (!user)
@@ -26,4 +27,4 @@ class AuthController {
     }
 }
 
-module.exports = new AuthController();
+module.exports = new LoginController();
