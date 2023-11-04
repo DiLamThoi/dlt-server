@@ -3,7 +3,7 @@ node_modules/
 npm-debug.log
 
 # Environment
-.env
+# .env
 
 # Logs
 logs/

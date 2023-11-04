@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/UserModel');
+const { comparePassword } = require('../utils/securityPassword');
 
 class LoginController {
     async post(req, res, next) {
@@ -7,12 +8,13 @@ class LoginController {
         const { userName, email, password } = data;
         userModel.findOne({ $or: [{ userName }, { email }] })
             .then(
-                (user) => {
+                async (user) => {
                     if (!user)
                         return res.status(401).json({ message: 'Username or email not found!' });
 
                     const userObject = user.toObject();
-                    if (userObject.password !== password)
+                    const isPasswordValid = await comparePassword(password, userObject.password);
+                    if (isPasswordValid)
                         return res.status(400).json({ message: 'Username or password does not match!' });
 
                     const token = jwt.sign({
