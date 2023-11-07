@@ -14,7 +14,7 @@ class LoginController {
 
                     const userObject = user.toObject();
                     const isPasswordValid = await comparePassword(password, userObject.password);
-                    if (isPasswordValid)
+                    if (!isPasswordValid)
                         return res.status(400).json({ message: 'Username or password does not match!' });
 
                     const token = jwt.sign({
