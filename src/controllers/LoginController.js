@@ -1,12 +1,25 @@
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/UserModel');
+const employerModel = require('../models/EmployerModel');
 const { comparePassword } = require('../utils/securityPassword');
 
 class LoginController {
     async post(req, res, next) {
         const { data } = req.body;
-        const { userName, email, password } = data;
-        userModel.findOne({ $or: [{ userName }, { email }] })
+        const { role, userName, email, password } = data;
+        let roleModel = userModel;
+        switch (role) {
+        case 'user':
+            roleModel = userModel;
+            break;
+        case 'employer':
+            roleModel = employerModel;   
+            break;
+        default:
+            break;
+        }
+
+        roleModel.findOne({ $or: [{ userName }, { email }] })
             .then(
                 async (user) => {
                     if (!user)

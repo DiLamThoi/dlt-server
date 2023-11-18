@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const JobSchema = new Schema({
-    id: String, // Mã công việc
     title: String, // Tiêu đề công việc
     levelId: String, // Mã mức độ quan trọng tìm nhân sự: gấp, cức gấp, bình thường, ...
     employerId: String, // Mã công ty/nhà tuyển dụng
