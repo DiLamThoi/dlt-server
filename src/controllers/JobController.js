@@ -58,11 +58,10 @@ class JobController {
                         totalView,
                     }
                 });
-                if (data[StoreConfig.hasJob][employerId]) {
-                    data[StoreConfig.hasJob][employerId].push(_id);
+                if (data[StoreConfig.hasJob][-1]) {
+                    data[StoreConfig.hasJob][-1].push(_id);
                 } else {
-                    Object.assign(data[StoreConfig.hasJob], { [employerId]: [_id] });
-                    employerIds.push(employerId);
+                    Object.assign(data[StoreConfig.hasJob], { [-1]: [_id] });
                 }
             });
             return employerIds;
