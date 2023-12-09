@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/UserModel');
 const employerModel = require('../models/EmployerModel');
@@ -16,6 +17,7 @@ class RegisterController {
                     }
                     hashPassword(password).then((hashedPassword) => {
                         return userModel.create({
+                            _id: new mongoose.Types.ObjectId(),
                             firstName,
                             lastName,
                             fullName,
@@ -43,6 +45,7 @@ class RegisterController {
                     }
                     hashPassword(password).then((hashedPassword) => {
                         return employerModel.create({
+                            _id: new mongoose.Types.ObjectId(),
                             name,
                             address,
                             userName,

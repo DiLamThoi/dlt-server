@@ -8,7 +8,7 @@ module.exports = {
         ecmaVersion: 2018,
     },
     rules: {
-        'no-console': 'warn',  // Không cho phép sử dụng console.log
+        'no-console': 'off',  // Không cho phép sử dụng console.log
         'no-unused-vars': 'off',  // Cảnh báo về biến không sử dụng
         'no-undef': 'error',  // Báo lỗi khi sử dụng biến chưa được định nghĩa
         'semi': ['error', 'always'],  // Yêu cầu dấu chấm phẩy sau mỗi lệnh

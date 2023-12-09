@@ -2,12 +2,10 @@ const express = require('express');
 const env = require('dotenv');
 const morgan = require('morgan');
 const routes  = require('./routes');
-const port = 8080; // DefaultPort for HTTP
 
-
-// Connect Server: mongoDB - localhost
-const DataBase = require('./src/config/db');
-DataBase.connect();
+// Connect Server: mongoDB
+const Database = require('./src/config/db');
+Database.connect();
 
 // Init ServerApp
 const app = express();
@@ -27,6 +25,6 @@ app.use((req, res, next) => {
 routes(app);
 
 // Listen server
-app.listen(port, () => {
-    console.log(`Server is running on ${port}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on ${process.env.PORT}`);
 });

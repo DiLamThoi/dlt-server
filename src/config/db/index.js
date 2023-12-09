@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DATABASE_URI = 'mongodb://server.truongnbn.com:27017/dlt-server';
+const DATABASE_URI = 'mongodb+srv://truongnbn:truongnbn@cluster0.dd9z0pf.mongodb.net/dlt-server?retryWrites=true&w=majority';
 
 async function connect(uri = DATABASE_URI) {
     try {
@@ -10,12 +10,12 @@ async function connect(uri = DATABASE_URI) {
         });
         console.log('Connect database successfully!');
     } catch (error) {
-        console.log('Connect database failure!', error);
+        throw new Error(`Connect database failure: ${error}`);
     }
 }
 
-const DataBase = {
+const Database = {
     connect,
 };
 
-module.exports = DataBase;
+module.exports = Database;
