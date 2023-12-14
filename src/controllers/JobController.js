@@ -14,65 +14,25 @@ class JobController {
             const employerIds = [];
             jobs.forEach(job => {
                 const jobObject = job.toObject();
-                const {
-                    _id,
-                    title,
-                    levelId,
-                    employerId,
-                    quantity,
-                    methodId,
-                    probationTime,
-                    salaryUnit,
-                    salaryMin,
-                    salaryMax,
-                    applyStartTime,
-                    applyEndTime,
-                    applyCount,
-                    ageMin,
-                    ageMax,
-                    degreeId,
-                    genderId,
-                    description,
-                    totalView
-                } = jobObject;
+                const { id } = jobObject;
                 Object.assign(data[StoreConfig.job], {
-                    [jobObject._id] : {
-                        id: _id,
-                        title,
-                        levelId,
-                        employerId,
-                        quantity,
-                        methodId,
-                        probationTime,
-                        salaryUnit,
-                        salaryMin,
-                        salaryMax,
-                        applyStartTime,
-                        applyEndTime,
-                        applyCount,
-                        ageMin,
-                        ageMax,
-                        degreeId,
-                        genderId,
-                        description,
-                        totalView,
-                    }
+                    [id] : jobObject
                 });
                 if (data[StoreConfig.hasJob][-1]) {
-                    data[StoreConfig.hasJob][-1].push(_id);
+                    data[StoreConfig.hasJob][-1].push(id);
                 } else {
-                    Object.assign(data[StoreConfig.hasJob], { [-1]: [_id] });
+                    Object.assign(data[StoreConfig.hasJob], { [-1]: [id] });
                 }
             });
             return employerIds;
         }).then((employerIds) => {
             employerIds.forEach((employerId) => {
                 const objectId = new mongoose.Types.ObjectId(employerId);
-                EmployerModel.findOne({ _id: objectId }).then((employer) => {
+                EmployerModel.findOne({ id: objectId }).then((employer) => {
                     const employerObject = employer.toObject();
-                    const { _id, name, logo, address } = employerObject;
+                    const { id, name, logo, address } = employerObject;
                     Object.assign(data[StoreConfig.employer], {
-                        [employerObject._id] : { id: _id, name, logo, address }
+                        [employerObject.id] : { id, name, logo, address }
                     });
                 });
             });

@@ -7,8 +7,8 @@ class EmployerController {
                 const data = {};
                 employers.forEach(employer => {
                     Object.assign(data, {
-                        [employer._id] : {
-                            id: employer._id,
+                        [employer.id] : {
+                            id: employer.id,
                             name: employer.name,
                             status: employer.status,
                             logo: employer.logo,

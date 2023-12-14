@@ -17,7 +17,7 @@ class RegisterController {
                     }
                     hashPassword(password).then((hashedPassword) => {
                         return userModel.create({
-                            _id: new mongoose.Types.ObjectId(),
+                            id: new mongoose.Types.ObjectId(),
                             firstName,
                             lastName,
                             fullName,
@@ -28,11 +28,11 @@ class RegisterController {
                     }).then((user) => {
                         const userObject = user.toObject();
                         const token = jwt.sign({
-                            id: userObject._id,
+                            id: userObject.id,
                             userName: userObject.userName,
                             email: userObject.email,
                         }, process.env.JWT_SECRET);
-                        res.json({ message: 'Registration successful!', token, meId: userObject._id });
+                        res.json({ message: 'Registration successful!', token, meId: userObject.id });
                     }).catch(next);
                 }).catch(next);
         }
@@ -45,7 +45,7 @@ class RegisterController {
                     }
                     hashPassword(password).then((hashedPassword) => {
                         return employerModel.create({
-                            _id: new mongoose.Types.ObjectId(),
+                            id: new mongoose.Types.ObjectId(),
                             name,
                             address,
                             userName,
@@ -55,11 +55,11 @@ class RegisterController {
                     }).then((employer) => {
                         const employerObject = employer.toObject();
                         const token = jwt.sign({
-                            id: employerObject._id,
+                            id: employerObject.id,
                             userName: employerObject.userName,
                             email: employerObject.email,
                         }, process.env.JWT_SECRET);
-                        res.json({ message: 'Registration successful!', token, meId: employerObject._id });
+                        res.json({ message: 'Registration successful!', token, meId: employerObject.id });
                     }).catch(next);
                 }).catch(next);
         } else {
