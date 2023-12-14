@@ -31,12 +31,12 @@ class LoginController {
                         return res.status(400).json({ message: 'Username or password does not match!' });
 
                     const token = jwt.sign({
-                        id: userObject._id,
+                        id: userObject.id,
                         userName: userObject.userName,
                         email: userObject.email,
                     }, process.env.JWT_SECRET);
 
-                    res.json({ message: 'Login successfully!', token, meId: userObject._id });
+                    res.json({ message: 'Login successfully!', token, meId: userObject.id });
                 }
             ).catch(next);
     }
