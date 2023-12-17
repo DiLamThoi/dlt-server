@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const initialDatabase = require('../initialData');
 
-const DATABASE_URI = 'mongodb+srv://truongnbn:truongnbn@cluster0.dd9z0pf.mongodb.net/dlt-server?retryWrites=true&w=majority';
+const DATABASE_URI
+    = 'mongodb+srv://truongnbn:truongnbn@cluster0.dd9z0pf.mongodb.net/dlt-server?retryWrites=true&w=majority';
 
 async function connect(uri = DATABASE_URI) {
     try {
@@ -16,6 +18,7 @@ async function connect(uri = DATABASE_URI) {
 
 const Database = {
     connect,
+    init: initialDatabase,
 };
 
 module.exports = Database;

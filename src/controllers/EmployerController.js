@@ -1,24 +1,14 @@
+const StoreConfig = require('../config/store/storeConfig');
 const EmployerModel = require('../models/EmployerModel');
+const { getObjectDocRequest } = require('../utils/getRequest');
 
 class EmployerController {
     get(req, res, next) {
-        EmployerModel.find({})
-            .then(employers => {
-                const data = {};
-                employers.forEach(employer => {
-                    Object.assign(data, {
-                        [employer.id] : {
-                            id: employer.id,
-                            name: employer.name,
-                            status: employer.status,
-                            logo: employer.logo,
-                            address: employer.address,
-                        }
-                    });
-                });
-                res.json(data);
-            })
-            .catch(next);
+        const data = { [StoreConfig.employer]: {} };
+        EmployerModel.find({}).then(employers => {
+            data[StoreConfig.employer] = getObjectDocRequest(employers, ['id', 'name', 'status', 'logo', 'address']);
+            res.json(data);
+        }).catch(next);
     }
 }
 

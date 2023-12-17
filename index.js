@@ -6,6 +6,7 @@ const routes  = require('./routes');
 // Connect Server: mongoDB
 const Database = require('./src/config/db');
 Database.connect();
+Database.init();
 
 // Init ServerApp
 const app = express();
