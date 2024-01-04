@@ -17,6 +17,27 @@ class JobController {
             res.json(data);
         }).catch(next);
     }
+
+    post(req, res, next) {
+        const { data } = req.body;
+        const resData = {
+            [StoreConfig.job]: {},
+            [StoreConfig.hasJob]: {},
+        };
+        JobModal.create({ ...data, id: new mongoose.Types.ObjectId() }).then((job) => {
+            resData[StoreConfig.job] = getObjectDocRequest([job]);
+            resData[StoreConfig.hasJob] = getEdgeDocRequest([job]);
+            res.json(resData);
+        }).catch(next);
+    }
+
+    delete(req, res, next) {
+        const { id } = req.body;
+        JobModal.deleteOne({ id: new mongoose.Types.ObjectId(id) }).then((result) => {
+            if (result.deletedCount === 1) res.json({ message: 'Delete successfully!' });
+            res.json({ message: 'JobId is not exist!' });
+        }).catch(next);
+    }
 }
 
 module.exports = new JobController();
