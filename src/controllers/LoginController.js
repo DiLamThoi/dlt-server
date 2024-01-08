@@ -36,7 +36,7 @@ class LoginController {
                         email: userObject.email,
                     }, process.env.JWT_SECRET);
 
-                    res.json({ message: 'Login successfully!', token, meId: userObject.id });
+                    res.json({ message: 'Login successfully!', token, meId: userObject.id, role });
                 }
             ).catch(next);
     }

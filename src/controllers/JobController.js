@@ -32,10 +32,10 @@ class JobController {
     }
 
     delete(req, res, next) {
-        const { id } = req.body;
+        const { id } = req.params;
         JobModal.deleteOne({ id: new mongoose.Types.ObjectId(id) }).then((result) => {
             if (result.deletedCount === 1) res.json({ message: 'Delete successfully!' });
-            res.json({ message: 'JobId is not exist!' });
+            res.status(404).json({ message: 'JobId not found!' });
         }).catch(next);
     }
 }
