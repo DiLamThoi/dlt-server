@@ -17,6 +17,7 @@ const JobSchema = new Schema({
     applyCount: Number, // Tổng số hồ sơ đã nộp
     ageMin: Number, // Độ tuổi tối thiểu
     ageMax: Number, // Độ tuổi tối đa
+    experienceId: String, // Mã kinh nghiệm
     degreeId: String, // Mã trình độ học vấn
     genderId: String, // Mã giới tính
     description: String, // Mô tả công việc
