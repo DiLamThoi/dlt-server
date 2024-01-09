@@ -3,6 +3,7 @@ const StoreConfig = require('../config/store/storeConfig');
 const JobModal = require('../models/JobModel');
 const EmployerModel = require('../models/EmployerModel');
 const { getObjectDocRequest, getEdgeDocRequest } = require('../utils/getRequest');
+const HasJobModal = require('../models/HasJobModel');
 
 class JobController {
     get(req, res, next) {
@@ -27,13 +28,24 @@ class JobController {
 
     post(req, res, next) {
         const { data } = req.body;
+        const parentId = data.employerId;
         const resData = {
             [StoreConfig.job]: {},
             [StoreConfig.hasJob]: {},
         };
-        JobModal.create({ ...data, id: new mongoose.Types.ObjectId() }).then((job) => {
+        const id = new mongoose.Types.ObjectId();
+        JobModal.create({ ...data, id }).then((job) => {
             resData[StoreConfig.job] = getObjectDocRequest([job]);
             resData[StoreConfig.hasJob] = getEdgeDocRequest([job]);
+            // HasJobModal.findOneAndUpdate({ parentId }, {
+            //     $addToSet: {
+            //         itemIds: id,
+            //         items: job.toObject()
+            //     },
+            //     $inc: {
+            //         total: 1
+            //     }
+            // });
             res.json(resData);
         }).catch(next);
     }
