@@ -6,11 +6,18 @@ const { getObjectDocRequest, getEdgeDocRequest } = require('../utils/getRequest'
 
 class JobController {
     get(req, res, next) {
+        const { id } = req.params;
         const data = {
             [StoreConfig.job]: {},
             [StoreConfig.hasJob]: {},
-            // [StoreConfig.employer]: {},
         };
+        if (id) {
+            JobModal.findById(new mongoose.Types.ObjectId(id)).then(job => {
+                data[StoreConfig.job] = getObjectDocRequest([job]);
+                data[StoreConfig.hasJob] = getEdgeDocRequest([job]);
+                res.json(data);
+            }).catch(next);
+        }
         JobModal.find({}).then(jobs => {
             data[StoreConfig.job] = getObjectDocRequest(jobs);
             data[StoreConfig.hasJob] = getEdgeDocRequest(jobs);
