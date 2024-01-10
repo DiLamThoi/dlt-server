@@ -19,7 +19,7 @@ class EmployerController {
                 );
                 res.json(data);
             }).catch(next);
-        }else {
+        } else {
             EmployerModel.find({}).then(employers => {
                 data[StoreConfig.employer] = getObjectDocRequest(
                     employers,
