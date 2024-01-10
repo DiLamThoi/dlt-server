@@ -14,7 +14,7 @@ class UserController {
                 if (!user) return res.status(400).json({ message: 'id not found' }); 
                 data[StoreConfig.user] = getObjectDocRequest(
                     [user],
-                    ['id', 'email', 'firstName', 'lastName', 'fullName', 'address', 'userName']
+                    ['id', 'email', 'firstName', 'lastName', 'fullName', 'userName']
                 );
                 res.json(data);
             }).catch(next);
@@ -22,7 +22,7 @@ class UserController {
             UserModel.find({}).then(users => {
                 data[StoreConfig.user] = getObjectDocRequest(
                     users,
-                    ['id', 'email', 'firstName', 'lastName', 'fullName', 'address', 'userName']
+                    ['id', 'email', 'firstName', 'lastName', 'fullName', 'userName']
                 );
                 res.json(data);
             }).catch(next);
