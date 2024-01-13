@@ -32,7 +32,7 @@ class RegisterController {
                             userName: userObject.userName,
                             email: userObject.email,
                         }, process.env.JWT_SECRET);
-                        res.json({ message: 'Registration successful!', token, meId: userObject.id });
+                        res.json({ message: 'Registration successful!', token, meId: userObject.id, role });
                     }).catch(next);
                 }).catch(next);
         }
@@ -59,7 +59,7 @@ class RegisterController {
                             userName: employerObject.userName,
                             email: employerObject.email,
                         }, process.env.JWT_SECRET);
-                        res.json({ message: 'Registration successful!', token, meId: employerObject.id });
+                        res.json({ message: 'Registration successful!', token, meId: employerObject.id, role });
                     }).catch(next);
                 }).catch(next);
         } else {

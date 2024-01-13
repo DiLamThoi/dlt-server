@@ -7,9 +7,10 @@ const EmployerSchema = new Schema({
     email: String,
     password: String,
     name: String,
-    status: Number,
     logo: String,
     address: String,
+    website: String,
+    description: String,
 });
 
 const EmployerModel = mongoose.model('employers', EmployerSchema);

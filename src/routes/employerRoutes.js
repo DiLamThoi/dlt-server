@@ -5,5 +5,6 @@ const router = express.Router();
 
 // Routes
 router.get('/', employerController.get);
+router.get('/:id', employerController.get);
 
 module.exports = router;

@@ -5,6 +5,9 @@ const StoreConfig = {
     employer: 'Employer',
     hasEmployer: 'HasEmployer',
 
+    user: 'User',
+    hasUser: 'HasUser',
+
     method: 'Method',
     degree: 'Degree',
     experience: 'Experience',

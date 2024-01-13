@@ -7,7 +7,7 @@ const JobSchema = new Schema({
     levelId: String, // Mã mức độ quan trọng tìm nhân sự: gấp, cức gấp, bình thường, ...
     employerId: String, // Mã công ty/nhà tuyển dụng
     quantity: Number, // Số lượng cần tuyển
-    methodId: Number, // Mã phương thức làm việc
+    methodId: String, // Mã phương thức làm việc
     probationTime: Number, // Thời gian thử việc
     salaryUnit: String, // Đơn vị tiền tệ cho lương
     salaryMin: Number, // Mức lương tối thiểu
@@ -17,6 +17,7 @@ const JobSchema = new Schema({
     applyCount: Number, // Tổng số hồ sơ đã nộp
     ageMin: Number, // Độ tuổi tối thiểu
     ageMax: Number, // Độ tuổi tối đa
+    experienceId: String, // Mã kinh nghiệm
     degreeId: String, // Mã trình độ học vấn
     genderId: String, // Mã giới tính
     description: String, // Mô tả công việc
