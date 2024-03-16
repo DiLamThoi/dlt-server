@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/UserModel');
-const employerModel = require('../models/EmployerModel');
+const { UserModel } = require('../models/UserModels');
+const { EmployerModel } = require('../models/EmployerModels');
 const { hashPassword } = require('../utils/securityPassword');
 
 class RegisterController {
@@ -10,13 +10,13 @@ class RegisterController {
 
         if (role === 'user') {
             const { firstName, lastName, fullName, userName, email, password } = data;
-            userModel.findOne({ $or: [{ userName }, { email }] })
+            UserModel.findOne({ $or: [{ userName }, { email }] })
                 .then((existingUser) => {
                     if (existingUser) {
                         return res.status(400).json({ message: 'Username or email is already in use!' });
                     }
                     hashPassword(password).then((hashedPassword) => {
-                        return userModel.create({
+                        return UserModel.create({
                             id: new mongoose.Types.ObjectId(),
                             firstName,
                             lastName,
@@ -38,13 +38,13 @@ class RegisterController {
         }
         else if (role === 'employer') {
             const { name, address, email, userName, password } = data;
-            employerModel.findOne({ $or: [{ userName }, { email }] })
+            EmployerModel.findOne({ $or: [{ userName }, { email }] })
                 .then((existingEmployer) => {
                     if (existingEmployer) {
                         return res.status(400).json({ message: 'Username or email is already in use!' });
                     }
                     hashPassword(password).then((hashedPassword) => {
-                        return employerModel.create({
+                        return EmployerModel.create({
                             id: new mongoose.Types.ObjectId(),
                             name,
                             address,

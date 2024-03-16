@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const StoreConfig = require('../store/storeConfig');
+const StoreConfig = require('../../store/storeConfig');
 
 const { ObjectId } = mongoose.Types;
 

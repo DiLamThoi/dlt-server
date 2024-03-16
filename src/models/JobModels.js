@@ -1,8 +1,7 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const createModel = require('../modules/base/model/createModel');
+const StoreConfig = require('../config/store/storeConfig');
 
-const JobSchema = new Schema({
-    id: mongoose.Types.ObjectId,
+const models = createModel(StoreConfig.job, {
     title: String, // Tiêu đề công việc
     levelId: String, // Mã mức độ quan trọng tìm nhân sự: gấp, cức gấp, bình thường, ...
     employerId: String, // Mã công ty/nhà tuyển dụng
@@ -24,6 +23,7 @@ const JobSchema = new Schema({
     totalView: Number, // Tổng số lượt đã xem
 });
 
-const JobModal = mongoose.model('jobs', JobSchema);
-
-module.exports = JobModal;
+module.exports = {
+    JobModel: models.objectModel,
+    HasJobModel: models.edgeModel,
+};

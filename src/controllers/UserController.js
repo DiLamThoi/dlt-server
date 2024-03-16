@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const StoreConfig = require('../config/store/storeConfig');
 const { getObjectDocRequest } = require('../utils/getRequest');
-const UserModel = require('../models/UserModel');
+const { UserModel } = require('../models/UserModels');
 
 class UserController {
     get(req, res, next) {
