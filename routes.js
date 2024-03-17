@@ -11,8 +11,8 @@ const routes = (app) => {
     app.use('/job', jobRoute);
     app.use('/employer', employerRoute);
     app.use('/user', userRoutes);
-    app.use('/', (req, res) => {
-        // res.send('home');
+    app.use('/', (req, res, next) => {
+        res.send('home');
     });
 };
 

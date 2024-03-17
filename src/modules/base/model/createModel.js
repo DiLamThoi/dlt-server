@@ -1,24 +1,22 @@
 const mongoose = require('mongoose');
+const createObjectModel = require('./createObjectModel');
+const createEdgeModel = require('./createEdgeModel');
 const Schema = mongoose.Schema;
 
-const createModel = (name, definition, createEdge = true) => {
-    const objectSchema = new Schema({
-        id: mongoose.Types.ObjectId,
-        ...definition,
-    });
-    const objectModel = mongoose.model(name, objectSchema);
+/**
+ * create objectModel and edgeModel for a module
+ * @param {String} name name of the module
+ * @param {mongoose.SchemaDefinitionType} definition definition of the object
+ * @param {Boolean} createEdge 
+ * @returns objectModel and edgeModel if createEdge is true
+ */
+const createModels = (name, definition, createEdge = true) => {
+    const objectModel = createObjectModel(name, definition);
     if (!createEdge) return { objectModel };
     else {
-        const edgeSchema = new Schema({
-            id: mongoose.Types.ObjectId,
-            parentId: String,
-            itemIds: Array,
-            items: Array,
-            total: Number,
-        });
-        const edgeModel = mongoose.model(`Has${name}`, edgeSchema);
+        const edgeModel = createEdgeModel(name, definition);
         return { objectModel, edgeModel };
     }
 };
 
-module.exports = createModel;
+module.exports = createModels;
