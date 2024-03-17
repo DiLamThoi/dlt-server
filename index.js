@@ -11,10 +11,11 @@ Database.init();
 // Init ServerApp
 const app = express();
 
-// MiddleWare
+// MiddleWare Server
 env.config();
 app.use(morgan('combined'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -24,6 +25,11 @@ app.use((req, res, next) => {
 
 // Routes Module
 routes(app);
+
+// Middleware Error
+app.use((err, req, res, next) => {
+    res.status(422).send({ error: err.message });
+});
 
 // Listen server
 app.listen(process.env.PORT, () => {
