@@ -1,7 +1,7 @@
-const { DegreeModel } = require('../../../models/DegreeModels');
-const { ExperienceModel } = require('../../../models/ExperienceModels');
-const { GenderModel } = require('../../../models/GenderModels');
-const { MethodModel } = require('../../../models/MethodModels');
+const { DegreeModel } = require('../../../modules/degree');
+const { ExperienceModel } = require('../../../modules/experience');
+const { GenderModel } = require('../../../modules/gender');
+const { MethodModel } = require('../../../modules/method');
 const StoreConfig = require('../../store/storeConfig');
 const initialData = require('./initialData');
 

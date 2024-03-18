@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const StoreConfig = require('../config/store/storeConfig');
-const { JobModel, HasJobModel } = require('../models/JobModels');
+const { JobModel, HasJobModel } = require('../modules/job');
 const { getObjectDocRequest, getEdgeDocRequest } = require('../utils/getRequest');
 
 class JobController {

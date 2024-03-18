@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { UserModel } = require('../models/UserModels');
-const { EmployerModel } = require('../models/EmployerModels');
+const { UserModel } = require('../modules/user');
+const { EmployerModel } = require('../modules/employer');
 const { comparePassword } = require('../utils/securityPassword');
 
 class LoginController {

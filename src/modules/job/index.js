@@ -1,7 +1,7 @@
-const createModel = require('../modules/base/model/createModel');
-const StoreConfig = require('../config/store/storeConfig');
+const StoreConfig = require('../../config/store/storeConfig');
+const { ObjectController, createModels, ParentController } = require('../base');
 
-const models = createModel(StoreConfig.job, {
+const models = createModels(StoreConfig.job, {
     title: String, // Tiêu đề công việc
     levelId: String, // Mã mức độ quan trọng tìm nhân sự: gấp, cức gấp, bình thường, ...
     employerId: String, // Mã công ty/nhà tuyển dụng

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const StoreConfig = require('../config/store/storeConfig');
-const { EmployerModel } = require('../models/EmployerModels');
+const { EmployerModel } = require('../modules/employer');
 const { getObjectDocRequest } = require('../utils/getRequest');
 
 class EmployerController {

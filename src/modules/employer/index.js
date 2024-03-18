@@ -1,7 +1,7 @@
-const createModel = require('../modules/base/model/createModel');
-const StoreConfig = require('../config/store/storeConfig');
+const StoreConfig = require('../../config/store/storeConfig');
+const { ObjectController, createModels, ParentController } = require('../base');
 
-const models = createModel(StoreConfig.employer, {
+const models = createModels(StoreConfig.employer, {
     email: String,
     name: String,
     logo: String,
