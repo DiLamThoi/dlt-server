@@ -5,9 +5,9 @@ const router = express.Router();
 const jobController = new JobController();
 
 // Routes
-// router.get('/job/', jobController.getAll);
+router.get('/job/', jobController.getAll);
 router.get('/job/:id', jobController.getById);
-// router.post('/job/', jobController.post);
-// router.delete('/job/:id', jobController.delete);
+router.post('/job/', jobController.create);
+router.delete('/job/:id', jobController.delete);
 
 module.exports = router;
