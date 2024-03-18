@@ -10,10 +10,15 @@ class ObjectController {
      * Constructs a new ObjectController.
      * @param {mongoose.Model} objectModel - The object model.
      * @param {mongoose.Model} edgeModel - The edge model.
+     * @param {Object} options - The options for the controller.
      */
-    constructor(objectModel, edgeModel) {
+    constructor(objectModel, edgeModel, options = {}) {
         this.objectModel = objectModel;
         this.edgeModel = edgeModel;
+        // Handle options
+        this.selectQuery = '';
+        if (options.selectFields) this.selectQuery += options.selectFields.join(' ');
+        if (options.blockedFields) this.selectQuery += '-' + options.blockedFields.join(' -');
         // Bind the methods to the class
         this.create = this.create.bind(this);
         this.getById = this.getById.bind(this);
@@ -31,13 +36,14 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     create(req, res, next) {
+        const { objectModel, edgeModel, selectQuery } = this;
         const { data } = req.body;
         const resData = {};
         const id = new mongoose.Types.ObjectId();
         const createdTime = new Date().getTime();
-        this.objectModel.create({ ...data, id, createdTime }).then((object) => {
+        objectModel.create({ ...data, id, createdTime }).then((object) => {
             const jsObject = object.toObject();
-            resData[this.objectModel.name] = {
+            resData[objectModel.modelName] = {
                 [jsObject.id]: jsObject,
             };
             res.json(resData);
@@ -52,11 +58,12 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     getById(req, res, next) {
+        const { objectModel, edgeModel, selectQuery } = this;
         const { id } = req.params;
         const resData = {};
         if (id) {
-            this.objectModel.findById(new mongoose.Types.ObjectId(id)).then((object) => {
-                resData[this.objectModel.name] = {
+            objectModel.findOne({ id: new mongoose.Types.ObjectId(id) }).select(selectQuery).then((object) => {
+                resData[objectModel.modelName] = {
                     [object.id]: object.toObject(),
                 };
                 res.json(resData);
@@ -73,10 +80,11 @@ class ObjectController {
      * @deprecated - This method is error-prone and should be replaced with a more robust solution.
      */
     getFilter(req, res, next) {
+        const { objectModel, edgeModel, selectQuery } = this;
         const params = req.params;
         const resData = {};
         // TODO: add convert params to query and queryId
-        this.objectModel.find(params).then((objects) => {
+        objectModel.find(params).then((objects) => {
             const edgeData = {
                 itemIds: [],
                 items: [],
@@ -89,9 +97,9 @@ class ObjectController {
                 edgeData.itemIds.push(jsObject.id);
                 edgeData.items.push(jsObject);
                 if (index === 0) edgeData.minScore = jsObject.createdTime;
-                else if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
+                if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
             });
-            resData[this.edgeModel.name] = { [ALL_ID]: edgeData };
+            resData[edgeModel.modelName] = { [ALL_ID]: edgeData };
             res.json(resData);
         }).catch(next);
     }
@@ -105,8 +113,9 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     getAll(req, res, next) {
+        const { objectModel, edgeModel, selectQuery } = this;
         const resData = {};
-        this.objectModel.find({}).then((objects) => {
+        objectModel.find({}).then((objects) => {
             const edgeData = {
                 itemIds: [],
                 items: [],
@@ -119,9 +128,9 @@ class ObjectController {
                 edgeData.itemIds.push(jsObject.id);
                 edgeData.items.push(jsObject);
                 if (index === 0) edgeData.minScore = jsObject.createdTime;
-                else if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
+                if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
             });
-            resData[this.edgeModel.name] = { [ALL_ID]: edgeData };
+            resData[edgeModel.modelName] = { [ALL_ID]: edgeData };
             res.json(resData);
         }).catch(next);
     }
@@ -134,17 +143,18 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     update(req, res, next) {
+        const { objectModel, edgeModel, selectQuery } = this;
         const { id } = req.params;
         const { data } = req.body;
         const resData = {};
         if (id) {
-            this.objectModel.findByIdAndUpdate(
+            objectModel.findByIdAndUpdate(
                 mongoose.Types.ObjectId(id),
                 { $set: data },
                 { new: true },
             ).then((object) => {
                 const jsObject = object.toObject();
-                resData[this.objectModel.name] = {
+                resData[objectModel.modelName] = {
                     [jsObject.id]: jsObject,
                 };
                 res.json(resData);
@@ -160,12 +170,13 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     delete(req, res, next) {
+        const { objectModel, edgeModel, selectQuery } = this;
         const { id } = req.params;
         const resData = {};
         if (id) {
-            this.objectModel.findByIdAndDelete(mongoose.Types.ObjectId(id)).then((object) => {
+            objectModel.findByIdAndDelete(mongoose.Types.ObjectId(id)).then((object) => {
                 const jsObject = object.toObject();
-                resData[this.objectModel.name] = {
+                resData[objectModel.modelName] = {
                     [jsObject.id]: jsObject,
                 };
                 res.json(resData);

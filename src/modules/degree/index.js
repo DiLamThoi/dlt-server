@@ -1,10 +1,7 @@
-const StoreConfig = require('../../config/store/storeConfig');
-const { createModels } = require('../base');
-
-const models = createModels(StoreConfig.degree, {
-    name: String,
-}, false);
+const { name } = require('./config/degreeConfig');
+const DegreeModel = require('./models/DegreeModel');
 
 module.exports = {
-    DegreeModel: models.objectModel,
+    name,
+    DegreeModel,
 };

@@ -1,10 +1,7 @@
-const StoreConfig = require('../../config/store/storeConfig');
-const { createModels } = require('../base');
-
-const models = createModels(StoreConfig.experience, {
-    name: String,
-}, false);
+const { name } = require('./config/experienceConfig');
+const ExperienceModel = require('./models/ExperienceModel');
 
 module.exports = {
-    ExperienceModel: models.objectModel,
+    name,
+    ExperienceModel,
 };

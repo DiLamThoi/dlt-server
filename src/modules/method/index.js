@@ -1,10 +1,7 @@
-const StoreConfig = require('../../config/store/storeConfig');
-const { createModels } = require('../base');
-
-const models = createModels(StoreConfig.method, {
-    name: String,
-}, false);
+const { name } = require('./config/methodConfig');
+const MethodModel = require('./models/MethodModel');
 
 module.exports = {
-    MethodModel: models.objectModel,
+    name,
+    MethodModel,
 };

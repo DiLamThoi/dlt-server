@@ -11,11 +11,16 @@ class ParentController {
      * @param {mongoose.Model} objectModel - The object model.
      * @param {mongoose.Model} edgeModel - The edge model.
      * @param {string} parentId - The parent ID which ID in the edge model.
+     * @param {Object} options - The options for the controller.
      */
-    constructor(objectModel, edgeModel, parentId) {
+    constructor(objectModel, edgeModel, parentId, options = {}) {
         this.objectModel = objectModel;
         this.edgeModel = edgeModel;
         this.parentId = parentId;
+        // Handle options
+        this.selectQuery = '';
+        if (options.selectFields) this.selectQuery += options.selectFields.join(' ');
+        if (options.blockedFields) this.selectQuery += '-' + options.blockedFields.join(' -');
         // Bind the methods to the class
         this.getFilter = this.getFilter.bind(this);
         this.getAll = this.getAll.bind(this);
@@ -30,12 +35,13 @@ class ParentController {
      * @deprecated - This method is error-prone and should be replaced with a more robust solution.
      */
     getFilter(req, res, next) {
+        const { objectModel, edgeModel, parentId, selectQuery } = this;
         const params = req.params;
         const resData = {};
         // TODO: add convert params to query and queryId
-        this.edgeModel.findById(mongoose.Types.ObjectId(this.parentId)).then((edge) => {
+        edgeModel.findById(mongoose.Types.ObjectId(parentId)).then((edge) => {
             const jsEdge = edge.toObject();
-            this.objectModel.find({ id: { $in: jsEdge.itemIds }, ...params }).then((objects) => {
+            objectModel.find({ id: { $in: jsEdge.itemIds }, ...params }).then((objects) => {
                 const edgeData = {
                     itemIds: [],
                     items: [],
@@ -50,7 +56,7 @@ class ParentController {
                     if (index === 0) edgeData.minScore = jsObject.createdTime;
                     else if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
                 });
-                resData[this.edgeModel.name] = { [this.parentId]: edgeData };
+                resData[edgeModel.modelName] = { [parentId]: edgeData };
                 res.json(resData);
             }).catch(next);
         }).catch(next);
@@ -65,10 +71,11 @@ class ParentController {
      * @param {Function} next - The next middleware function.
      */
     getAll(req, res, next) {
+        const { objectModel, edgeModel, parentId, selectQuery } = this;
         const resData = {};
-        this.edgeModel.findById(mongoose.Types.ObjectId(this.parentId)).then((edge) => {
+        edgeModel.findById(mongoose.Types.ObjectId(parentId)).then((edge) => {
             const jsEdge = edge.toObject();
-            resData[this.edgeModel.name] = { [this.parentId]: jsEdge };
+            resData[edgeModel.modelName] = { [parentId]: jsEdge };
             res.json(resData);
         }).catch(next);
     }
