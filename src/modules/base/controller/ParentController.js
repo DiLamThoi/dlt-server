@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const BaseResponse = require('./utils/BaseResponse');
 
 const ALL_ID = 'all';
 
@@ -35,6 +36,7 @@ class ParentController {
      * @deprecated - This method is error-prone and should be replaced with a more robust solution.
      */
     getFilter(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, parentId, selectQuery } = this;
         const params = req.params;
         const resData = {};
@@ -57,7 +59,7 @@ class ParentController {
                     else if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
                 });
                 resData[edgeModel.modelName] = { [parentId]: edgeData };
-                res.json(resData);
+                Response._200WithData(resData);
             }).catch(next);
         }).catch(next);
     }
@@ -71,12 +73,13 @@ class ParentController {
      * @param {Function} next - The next middleware function.
      */
     getAll(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, parentId, selectQuery } = this;
         const resData = {};
         edgeModel.findById(mongoose.Types.ObjectId(parentId)).then((edge) => {
             const jsEdge = edge.toObject();
             resData[edgeModel.modelName] = { [parentId]: jsEdge };
-            res.json(resData);
+            Response._200WithData(resData);
         }).catch(next);
     }
 }

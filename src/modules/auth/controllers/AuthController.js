@@ -2,37 +2,37 @@ const jwt = require('jsonwebtoken');
 const { comparePassword, hashPassword } = require('../utils/encodePassword');
 const getModelByRole = require('../utils/getModelByRole');
 const mongoose = require('mongoose');
+const BaseResponse = require('../../base/controller/utils/BaseResponse');
 
 class AuthController {
-    async login(req, res, next) {
-        const { data } = req.body;
-        const { role, userName, email, password } = data;
+    login(req, res, next) {
+        const Response = new BaseResponse(res);
+        const { data, role } = req.body;
+        const { userName, email, password } = data;
         const Model = getModelByRole(role);
         Model.findOne({ $or: [{ userName }, { email }] })
-            .then(
-                async (acc) => {
-                    if (!acc)
-                        return res.status(401).json({ message: 'Username or email not found!' });
-                    const accObject = acc.toObject();
-                    const isPasswordValid = await comparePassword(password, accObject.password);
-                    if (!isPasswordValid)
-                        return res.status(400).json({ message: 'Username or password does not match!' });
+            .then((acc) => {
+                if (!acc) Response._401('Username or email not found!');
+                const accObject = acc.toObject();
+                comparePassword(password, accObject.password).then((isPasswordValid) => {
+                    if (!isPasswordValid) Response._401('Username or password does not match!');
                     const token = jwt.sign({
                         id: accObject.id,
                         userName: accObject.userName,
                         email: accObject.email,
                     }, process.env.JWT_SECRET);
-                    res.json({ message: 'Login successfully!', token, meId: accObject.id, role });
-                }
-            ).catch(next);
+                    Response._200WithData({ token, meId: accObject.id, role });
+                }).catch(next);
+            }).catch(next);
     }
-    async register(req, res, next) {
+    register(req, res, next) {
+        const Response = new BaseResponse(res);
         const { role, data } = req.body;
         const Model = getModelByRole(role);
         Model.findOne({ $or: [{ userName: data.userName }, { email: data.email }] })
             .then((existingAcc) => {
                 if (existingAcc) {
-                    return res.status(400).json({ message: 'Username or email is already in use!' });
+                    Response._401('Username or email is already in use!');
                 }
                 hashPassword(data.password).then((hashedPassword) => {
                     return Model.create({
@@ -43,7 +43,7 @@ class AuthController {
                 }).then((acc) => {
                     const accObject = acc.toObject();
                     const token = jwt.sign(accObject, process.env.JWT_SECRET);
-                    res.json({ message: 'Registration successful!', token, meId: accObject.id, role });
+                    Response._200WithData({ token, meId: accObject.id, role });
                 }).catch(next);
             }).catch(next);
     }

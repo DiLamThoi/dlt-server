@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const BaseResponse = require('./utils/BaseResponse');
 
 const ALL_ID = 'all';
 
@@ -36,17 +37,14 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     create(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, selectQuery } = this;
         const { data } = req.body;
-        const resData = {};
         const id = new mongoose.Types.ObjectId();
         const createdTime = new Date().getTime();
         objectModel.create({ ...data, id, createdTime }).then((object) => {
             const jsObject = object.toObject();
-            resData[objectModel.modelName] = {
-                [jsObject.id]: jsObject,
-            };
-            res.json(resData);
+            Response._201(jsObject.id, createdTime);
         }).catch(next);
     }
 
@@ -58,6 +56,7 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     getById(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, selectQuery } = this;
         const { id } = req.params;
         const resData = {};
@@ -66,7 +65,7 @@ class ObjectController {
                 resData[objectModel.modelName] = {
                     [object.id]: object.toObject(),
                 };
-                res.json(resData);
+                Response._200WithData(resData);
             }).catch(next);
         }
     }
@@ -80,6 +79,7 @@ class ObjectController {
      * @deprecated - This method is error-prone and should be replaced with a more robust solution.
      */
     getFilter(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, selectQuery } = this;
         const params = req.params;
         const resData = {};
@@ -113,6 +113,7 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     getAll(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, selectQuery } = this;
         const resData = {};
         objectModel.find({}).then((objects) => {
@@ -131,7 +132,7 @@ class ObjectController {
                 if (index === objects.length - 1) edgeData.maxScore = jsObject.createdTime;
             });
             resData[edgeModel.modelName] = { [ALL_ID]: edgeData };
-            res.json(resData);
+            Response._200WithData(resData);
         }).catch(next);
     }
     
@@ -143,6 +144,7 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     update(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, selectQuery } = this;
         const { id } = req.params;
         const { data } = req.body;
@@ -153,11 +155,7 @@ class ObjectController {
                 { $set: data },
                 { new: true },
             ).then((object) => {
-                const jsObject = object.toObject();
-                resData[objectModel.modelName] = {
-                    [jsObject.id]: jsObject,
-                };
-                res.json(resData);
+                Response._200();
             }).catch(next);
         }
     }
@@ -170,16 +168,12 @@ class ObjectController {
      * @param {Function} next - The next middleware function.
      */
     delete(req, res, next) {
+        const Response = new BaseResponse(res);
         const { objectModel, edgeModel, selectQuery } = this;
         const { id } = req.params;
-        const resData = {};
         if (id) {
             objectModel.findByIdAndDelete(mongoose.Types.ObjectId(id)).then((object) => {
-                const jsObject = object.toObject();
-                resData[objectModel.modelName] = {
-                    [jsObject.id]: jsObject,
-                };
-                res.json(resData);
+                Response._200();
             }).catch(next);
         }
     }
